@@ -253,15 +253,15 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
   <div class="win7-modal-overlay" id="win-error-overlay">
     <div class="aero-window" id="win-error-dialog">
       <div class="aero-titlebar">
-        <div class="aero-title-icon">❌</div>
-        <div class="aero-title-text">System Error</div>
+        <div class="aero-title-icon" id="error-dialog-title-icon">❌</div>
+        <div class="aero-title-text" id="error-dialog-title-text">System Error</div>
         <div class="aero-controls">
           <button class="aero-close" onclick="dismissSystemError()">&times;</button>
         </div>
       </div>
       <div class="error-content-body">
         <div class="error-message-row">
-          <img src="assets/error-icon.png" alt="Error Icon" class="error-system-icon" onerror="this.src='https://img.icons8.com/color/48/000000/cancel--v1.png'">
+          <img src="assets/error-icon.png" alt="Error Icon" class="error-system-icon" id="error-dialog-body-icon" onerror="this.src='https://img.icons8.com/color/48/000000/cancel--v1.png'">
           <div class="error-text-container">
             <span id="error-message-text">A system exception has occurred. Please confirm records state.</span>
           </div>
