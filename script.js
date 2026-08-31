@@ -1,4 +1,4 @@
-const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxy8z8eErqhI5Q4t1aZBQrj2t2rHLQ1Be0aMzWHDUNkzUG_guOiLVwE4tH0GYWwU0SH9g/exec";
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxuNDoPcHgz3jltRSGoHtcBZbAmHZdjKl5Z90bskUNI2yqrZxgU25kjWX2sVYzyOAwIMw/exec";
 
 // Window management state
 const openWindows = {};
@@ -24,7 +24,7 @@ document.addEventListener('click', playStartupChimeOnce);
 document.addEventListener('DOMContentLoaded', () => {
   updateClock();
   setInterval(updateClock, 1000);
-  
+
   // Instantly pop open the 'About Me' Notepad frame on startup
   openWindow('about');
 });
@@ -100,7 +100,7 @@ function minimizeWindow(event, id) {
 
   win.style.display = 'none';
   win.classList.add('minimized');
-  
+
   // Revert active states
   win.classList.remove('active');
   const btn = document.querySelector(`.taskbar-btn[data-window-id="${id}"]`);
@@ -277,7 +277,7 @@ function handleCtxAction(action) {
       desktop.classList.remove('win7-refresh-flicker');
       void desktop.offsetWidth; // Force redraw reflow
       desktop.classList.add('win7-refresh-flicker');
-      
+
       // Remove class after animation concludes
       setTimeout(() => {
         desktop.classList.remove('win7-refresh-flicker');
@@ -318,29 +318,29 @@ document.addEventListener('submit', (e) => {
       },
       body: JSON.stringify(payload)
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(result => {
-      // 5. State Cleanup & message presentation
-      document.body.classList.remove('waiting');
-      if (result && result.status === 'success') {
-        e.target.reset();
-        showSystemMessage('Windows Mail', 'Your message has been sent successfully.', false);
-      } else {
-        const errorMsg = result && result.message ? result.message : 'Unknown Webhook Error';
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(result => {
+        // 5. State Cleanup & message presentation
+        document.body.classList.remove('waiting');
+        if (result && result.status === 'success') {
+          e.target.reset();
+          showSystemMessage('Windows Mail', 'Your message has been sent successfully.', false);
+        } else {
+          const errorMsg = result && result.message ? result.message : 'Unknown Webhook Error';
+          showSystemMessage('System Error', `Failed to deliver message: ${errorMsg}`, true);
+        }
+      })
+      .catch(error => {
+        // Capture error and show system dialog popup
+        document.body.classList.remove('waiting');
+        const errorMsg = error && error.message ? error.message : String(error);
         showSystemMessage('System Error', `Failed to deliver message: ${errorMsg}`, true);
-      }
-    })
-    .catch(error => {
-      // Capture error and show system dialog popup
-      document.body.classList.remove('waiting');
-      const errorMsg = error && error.message ? error.message : String(error);
-      showSystemMessage('System Error', `Failed to deliver message: ${errorMsg}`, true);
-    });
+      });
   }
 });
 
@@ -375,7 +375,7 @@ function showSystemMessage(title, message, isError = true) {
   }
 
   overlay.style.display = 'flex';
-  
+
   // Place active z-index prioritized top of screen
   windowZIndex++;
   dialog.style.zIndex = windowZIndex;
