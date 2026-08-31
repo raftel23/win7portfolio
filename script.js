@@ -1,5 +1,20 @@
 const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxuNDoPcHgz3jltRSGoHtcBZbAmHZdjKl5Z90bskUNI2yqrZxgU25kjWX2sVYzyOAwIMw/exec";
 
+// Dynamic central data model for the Notepad About Me module
+const ABOUT_ME_DATA = {
+  avatarUrl: "assets/sword.png",
+  title: "Administrative & Digital Services",
+  paragraphs: [
+    `Hello! I'm Denver.
+
+I am an Office Staff professional specializing in administrative records management. I focus on details, structural workflows, efficiency, and building reliable systems to handle physical and digital documents.
+
+This interactive portfolio is styled as a skeuomorphic tribute to Windows 7.
+
+Double-click desktop icons or use the Start Menu to explore further!`
+  ]
+};
+
 // rate-limit cooldown duration set to 3 minutes (180000 milliseconds)
 const COOLDOWN_DURATION = 180000;
 
@@ -47,9 +62,46 @@ document.addEventListener('DOMContentLoaded', () => {
     playStartupChimeOnce();
   }
   
+  // Render dynamic data model into Notepad window elements
+  renderAboutMeContent();
+
   // Instantly pop open the 'About Me' Notepad frame on startup
   openWindow('about');
 });
+
+// RENDER FUNCTION FOR DYNAMIC ABOUT ME CONTENT
+function renderAboutMeContent() {
+  const avatarEl = document.getElementById('about-avatar');
+  const titleEl = document.getElementById('about-title');
+  const textContainerEl = document.getElementById('about-text-container');
+
+  if (avatarEl) {
+    avatarEl.src = ABOUT_ME_DATA.avatarUrl;
+    avatarEl.onerror = () => {
+      avatarEl.src = 'https://via.placeholder.com/100?text=Sword+Pic';
+    };
+  }
+  if (titleEl) {
+    titleEl.innerText = ABOUT_ME_DATA.title;
+  }
+  if (textContainerEl) {
+    textContainerEl.innerHTML = '';
+    ABOUT_ME_DATA.paragraphs.forEach(para => {
+      // Split on double newlines in case it's a single multiline string
+      const lines = para.split(/\n\s*\n/);
+      lines.forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed) {
+          const p = document.createElement('p');
+          p.innerText = trimmed;
+          p.style.marginBottom = '12px';
+          p.style.lineHeight = '1.5';
+          textContainerEl.appendChild(p);
+        }
+      });
+    });
+  }
+}
 
 // SYSTEM TIME ENGINE
 function updateClock() {

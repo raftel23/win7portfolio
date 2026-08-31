@@ -74,15 +74,11 @@
           <div class="notepad-editor">
             <div class="notepad-menu">File Edit Format View Help</div>
             <div class="notepad-body">
-              <img src="assets/sword.png" alt="Denver Profile Pic" class="notepad-profile-pic"
-                onerror="this.src='https://via.placeholder.com/100?text=Sword+Pic'">
-              <div class="notepad-text-content">Hello! I'm Denver.
-
-I am an Office Staff professional specializing in administrative records management. I focus on details, structural workflows, efficiency, and building reliable systems to handle physical and digital documents.
-
-This interactive portfolio is styled as a skeuomorphic tribute to Windows 7.
-
-Double-click desktop icons or use the Start Menu to explore further!</div>
+              <img id="about-avatar" src="" alt="Avatar" class="notepad-profile-pic">
+              <div class="notepad-text-content">
+                <h1 id="about-title" style="font-size: 14px; font-weight: bold; margin-bottom: 12px; font-family: inherit;"></h1>
+                <div id="about-text-container"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -187,8 +183,8 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
               </div> -->
             </div>
             <div class="mail-body-wrapper">
-              <textarea id="mail-message" name="message" placeholder="Type your message details here..."
-                required maxlength="300"></textarea>
+              <textarea id="mail-message" name="message" placeholder="Type your message details here..." required
+                maxlength="500"></textarea>
             </div>
             <div class="mail-footer">
               <button type="submit" class="win7-btn">Send</button>
