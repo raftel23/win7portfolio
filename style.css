@@ -1049,3 +1049,118 @@ body.waiting, body.waiting * {
 .ms-cell[data-count="6"] { color: cyan; }
 .ms-cell[data-count="7"] { color: black; }
 .ms-cell[data-count="8"] { color: gray; }
+
+/* WINDOWS 7 LOGON/WELCOME SCREEN BACKGROUND */
+#win7-logon-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #1b68a8 0%, #09335f 100%);
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  color: #fff;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#win7-logon-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.logon-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  transform: translateY(-20px);
+}
+
+.logon-avatar-frame {
+  width: 120px;
+  height: 120px;
+  border: 3px solid rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.7);
+  overflow: hidden;
+  margin-bottom: 16px;
+  background: #fff;
+}
+
+.logon-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logon-username {
+  font-size: 24px;
+  font-weight: 300;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  margin-bottom: 4px;
+}
+
+.logon-status {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.75);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  margin-bottom: 25px;
+}
+
+.logon-btn {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  color: #fff;
+  padding: 6px 30px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: default;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.3);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.logon-btn:hover {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.18) 100%);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 0 8px rgba(255,255,255,0.45);
+}
+
+.logon-btn:active {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.logon-footer {
+  margin-bottom: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logon-logo {
+  font-size: 20px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.win-flag-icon {
+  font-size: 26px;
+  background: linear-gradient(135deg, #ff3333 0%, #ffcc33 50%, #33cc33 50%, #3333ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4));
+}

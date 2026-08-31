@@ -34,8 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClock();
   setInterval(updateClock, 1000);
   
-  // Try playing the sound immediately on load
-  playStartupChimeOnce();
+  // Logon Welcome screen interaction handles
+  const logonScreen = document.getElementById('win7-logon-screen');
+  if (logonScreen) {
+    logonScreen.addEventListener('click', () => {
+      if (logonScreen.classList.contains('fade-out')) return;
+      playStartupChimeOnce();
+      logonScreen.classList.add('fade-out');
+    });
+  } else {
+    // Fallback if Logon screen overlay is missing
+    playStartupChimeOnce();
+  }
   
   // Instantly pop open the 'About Me' Notepad frame on startup
   openWindow('about');
