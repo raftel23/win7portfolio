@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ashford - Windows 7 Web Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- DESKTOP CONTAINER -->
+  <div id="desktop">
+    
+    <!-- DESKTOP SHORTCUTS -->
+    <div class="desktop-icons-container">
+      <div class="desktop-icon" ondblclick="openWindow('about')">
+        <div class="icon-pic">📄</div>
+        <div class="icon-label">About Me</div>
+      </div>
+      <div class="desktop-icon" ondblclick="openWindow('skills')">
+        <div class="icon-pic">⚙️</div>
+        <div class="icon-label">Control Panel</div>
+      </div>
+      <div class="desktop-icon" ondblclick="openWindow('contact')">
+        <div class="icon-pic">✉️</div>
+        <div class="icon-label">Windows Mail</div>
+      </div>
+    </div>
+
+    <!-- ACTIVE WINDOWS RENDER SPACE -->
+    <div id="desktop-windows-container">
+      
+      <!-- MODULAR APP: ABOUT ME (NOTEPAD THEME) -->
+      <div class="aero-window" id="win-about" style="width: 580px; height: 420px; top: 80px; left: 100px; display: none;">
+        <div class="aero-titlebar" onmousedown="startDrag(event, 'about')">
+          <div class="aero-title-icon">📄</div>
+          <div class="aero-title-text">About Me - Notepad</div>
+          <div class="aero-controls">
+            <button onclick="minimizeWindow(event, 'about')">&#9472;</button>
+            <button onclick="toggleMaximize(event, 'about')">&#9633;</button>
+            <button class="aero-close" onclick="closeWindow(event, 'about')">&times;</button>
+          </div>
+        </div>
+        <div class="aero-content">
+          <div class="notepad-editor">
+            <div class="notepad-menu">File  Edit  Format  View  Help</div>
+            <div class="notepad-body">
+              <img src="assets/sword.png" alt="Ashford Profile Pic" class="notepad-profile-pic" onerror="this.src='https://via.placeholder.com/100?text=Sword+Pic'">
+              <div class="notepad-text-content">Hello! I'm Ashford.
+
+I am an Office Staff professional specializing in administrative records management. I focus on details, structural workflows, efficiency, and building reliable systems to handle physical and digital documents.
+
+This interactive portfolio is styled as a skeuomorphic tribute to Windows 7. 
+
+Double-click desktop icons or use the Start Menu to explore further!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULAR APP: TECHNICAL SKILLS (CONTROL PANEL THEME) -->
+      <div class="aero-window" id="win-skills" style="width: 620px; height: 440px; top: 120px; left: 140px; display: none;">
+        <div class="aero-titlebar" onmousedown="startDrag(event, 'skills')">
+          <div class="aero-title-icon">⚙️</div>
+          <div class="aero-title-text">Control Panel\System and Security\Skills</div>
+          <div class="aero-controls">
+            <button onclick="minimizeWindow(event, 'skills')">&#9472;</button>
+            <button onclick="toggleMaximize(event, 'skills')">&#9633;</button>
+            <button class="aero-close" onclick="closeWindow(event, 'skills')">&times;</button>
+          </div>
+        </div>
+        <div class="aero-content">
+          <div class="control-panel">
+            <div class="cp-sidebar">
+              <h3>Control Panel Home</h3>
+              <ul>
+                <li class="active">💻 Technical Skills</li>
+                <li>🔧 Digital Services</li>
+              </ul>
+            </div>
+            <div class="cp-content">
+              <h2>Technical Digital Services Rating</h2>
+              <p style="margin-bottom: 15px; color: #555;">Review administrative and technical records matrix:</p>
+              <div class="skills-list">
+                <div class="skill-row">
+                  <span class="skill-bullet">🔹</span>
+                  <div class="skill-details">
+                    <h4>Virtual Assistance (VA)</h4>
+                    <p>Calendar management, structured organization, correspondence coordination.</p>
+                  </div>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-bullet">🔹</span>
+                  <div class="skill-details">
+                    <h4>Canva Editing</h4>
+                    <p>Designing digital documents, administrative graphics, templates, and social materials.</p>
+                  </div>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-bullet">🔹</span>
+                  <div class="skill-details">
+                    <h4>Email Automation</h4>
+                    <p>Autoresponder triggers, system alerts, contact segmentation pipeline.</p>
+                  </div>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-bullet">🔹</span>
+                  <div class="skill-details">
+                    <h4>Funnel Creation</h4>
+                    <p>Formulating visual flow processes, lead capture landing page design.</p>
+                  </div>
+                </div>
+                <div class="skill-row">
+                  <span class="skill-bullet">🔹</span>
+                  <div class="skill-details">
+                    <h4>Lead Magnets</h4>
+                    <p>Digital guide formatting, structural resources, and administrative downloads.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULAR APP: EMAIL CLIENT (WINDOWS LIVE MAIL THEME) -->
+      <div class="aero-window" id="win-contact" style="width: 540px; height: 420px; top: 160px; left: 180px; display: none;">
+        <div class="aero-titlebar" onmousedown="startDrag(event, 'contact')">
+          <div class="aero-title-icon">✉️</div>
+          <div class="aero-title-text">Windows Live Mail - Compose Message</div>
+          <div class="aero-controls">
+            <button onclick="minimizeWindow(event, 'contact')">&#9472;</button>
+            <button onclick="toggleMaximize(event, 'contact')">&#9633;</button>
+            <button class="aero-close" onclick="closeWindow(event, 'contact')">&times;</button>
+          </div>
+        </div>
+        <div class="aero-content">
+          <form class="mail-client" id="email-form">
+            <div class="mail-headers">
+              <div class="mail-row">
+                <span>Name:</span>
+                <input type="text" id="mail-name" name="name" placeholder="Your Name" required>
+              </div>
+              <div class="mail-row">
+                <span>Sender Email:</span>
+                <input type="email" id="mail-sender" name="email" placeholder="your.email@domain.com" required>
+              </div>
+              <div class="mail-row">
+                <span>Subject:</span>
+                <input type="text" id="mail-subject" name="subject" placeholder="Inquiry details" required>
+              </div>
+              <div class="mail-row">
+                <span>To:</span>
+                <input type="text" id="mail-to" name="to" value="ashford@gemini-devs.com" disabled readonly>
+              </div>
+            </div>
+            <div class="mail-body-wrapper">
+              <textarea id="mail-message" name="message" placeholder="Type your message details here..." required></textarea>
+            </div>
+            <div class="mail-footer">
+              <button type="submit" class="win7-btn">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DUAL COLUMN START MENU -->
+    <div class="start-menu" id="start-menu">
+      <div class="start-left">
+        <div class="start-programs-list">
+          <div class="start-program-item" onclick="openWindow('about'); toggleStartMenu();">
+            <span class="prog-icon">📄</span>
+            <div class="prog-details">
+              <span class="prog-title">Notepad</span>
+              <span class="prog-subtitle">About Me text bio</span>
+            </div>
+          </div>
+          <div class="start-program-item" onclick="openWindow('skills'); toggleStartMenu();">
+            <span class="prog-icon">⚙️</span>
+            <div class="prog-details">
+              <span class="prog-title">Control Panel</span>
+              <span class="prog-subtitle">Digital services panel</span>
+            </div>
+          </div>
+          <div class="start-program-item" onclick="openWindow('contact'); toggleStartMenu();">
+            <span class="prog-icon">✉️</span>
+            <div class="prog-details">
+              <span class="prog-title">Windows Mail</span>
+              <span class="prog-subtitle">Send a message</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="start-right">
+        <div class="user-badge-frame">🌺</div>
+        <div class="start-right-links">
+          <div class="start-link" onclick="openWindow('about'); toggleStartMenu();">Documents</div>
+          <div class="start-link" onclick="openWindow('skills'); toggleStartMenu();">Control Panel</div>
+          <div class="start-divider"></div>
+          <div class="start-link" onclick="toggleStartMenu(); showSystemError('Help and Support portal is currently offline.');">Help and Support</div>
+        </div>
+        <div class="start-footer-right">
+          <div class="shutdown-btn-container">
+            <button class="shutdown-btn" onclick="toggleStartMenu(); showSystemError('Shut down command block restricted: Demonstration mode.');">Shut down</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TASKBAR -->
+    <div class="taskbar">
+      <!-- Start button Orb -->
+      <div class="start-button-orb" id="start-button" onclick="toggleStartMenu(event)">
+        <div class="start-orb-glow"></div>
+        <svg class="start-logo" viewBox="0 0 24 24" width="22" height="22">
+          <path d="M5,12.5 C7.5,11.5 10.5,12 12,13.2 L12,4.8 C10.5,3.6 7.5,3.1 5,4.1 Z" fill="#f35022" />
+          <path d="M13,13.2 C14.5,12.2 17.5,12.5 20,13.8 L20,5.4 C17.5,4.1 14.5,3.8 13,4.8 Z" fill="#80bb0a" />
+          <path d="M5,20.6 C7.5,19.6 10.5,20.1 12,21.3 L12,12.9 C10.5,11.7 7.5,11.2 5,12.2 Z" fill="#00a3ee" />
+          <path d="M13,21.3 C14.5,20.3 17.5,20.6 20,21.9 L20,13.5 C17.5,12.2 14.5,11.9 13,12.9 Z" fill="#ffb900" />
+        </svg>
+      </div>
+
+      <!-- Pinned applications / Taskbar button container -->
+      <div id="taskbar-items-container"></div>
+
+      <!-- Sys Tray Clock / desktop bar -->
+      <div class="sys-tray">
+        <div class="tray-icons">📶 🔊 🔋</div>
+        <div class="tray-time">
+          <span id="tray-time-clock">12:00 PM</span>
+          <span id="tray-time-date">8/31/2026</span>
+        </div>
+        <div class="show-desktop-bar" onclick="minimizeAllWindows()" title="Show Desktop"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT CLICK CUSTOM CONTEXT MENU -->
+  <div class="context-menu" id="context-menu">
+    <div class="context-item" onclick="handleCtxAction('view')">View <span style="font-size: 8px; color: #666;">&#9656;</span></div>
+    <div class="context-item" onclick="handleCtxAction('sort')">Sort by <span style="font-size: 8px; color: #666;">&#9656;</span></div>
+    <div class="context-item" onclick="handleCtxAction('refresh')">Refresh</div>
+    <div class="context-divider"></div>
+    <div class="context-item" onclick="handleCtxAction('new')">New <span style="font-size: 8px; color: #666;">&#9656;</span></div>
+    <div class="context-divider"></div>
+    <div class="context-item" onclick="handleCtxAction('personalize')">Personalize</div>
+  </div>
+
+  <!-- SYSTEM MODAL: CLASSIC WINDOWS 7 SYSTEM ERROR DIALOGUE BOX -->
+  <div class="win7-modal-overlay" id="win-error-overlay">
+    <div class="aero-window" id="win-error-dialog">
+      <div class="aero-titlebar">
+        <div class="aero-title-icon">❌</div>
+        <div class="aero-title-text">System Error</div>
+        <div class="aero-controls">
+          <button class="aero-close" onclick="dismissSystemError()">&times;</button>
+        </div>
+      </div>
+      <div class="error-content-body">
+        <div class="error-message-row">
+          <img src="assets/error-icon.png" alt="Error Icon" class="error-system-icon" onerror="this.src='https://img.icons8.com/color/48/000000/cancel--v1.png'">
+          <div class="error-text-container">
+            <span id="error-message-text">A system exception has occurred. Please confirm records state.</span>
+          </div>
+        </div>
+        <div class="error-action-row">
+          <button class="error-ok-btn" onclick="dismissSystemError()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTERNAL SCRIPT -->
+  <script src="script.js"></script>
+</body>
+</html>
