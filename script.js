@@ -319,10 +319,21 @@ document.addEventListener('submit', (e) => {
       body: JSON.stringify(payload)
     })
     .then(response => {
-      // 5. State Cleanup & success confirmation
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(result => {
+      // 5. State Cleanup & message presentation
       document.body.classList.remove('waiting');
-      e.target.reset();
-      showSystemMessage('Windows Mail', 'Your message has been sent successfully.', false);
+      if (result && result.status === 'success') {
+        e.target.reset();
+        showSystemMessage('Windows Mail', 'Your message has been sent successfully.', false);
+      } else {
+        const errorMsg = result && result.message ? result.message : 'Unknown Webhook Error';
+        showSystemMessage('System Error', `Failed to deliver message: ${errorMsg}`, true);
+      }
     })
     .catch(error => {
       // Capture error and show system dialog popup
