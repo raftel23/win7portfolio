@@ -359,8 +359,8 @@ document.addEventListener('submit', (e) => {
     }
 
     // Message Body Size checks
-    if (messageVal.length === 0 || messageVal.length > 500) {
-      showSystemMessage('System Error', 'System Error: Message size restrictions violated. Content body must be between 1 and 500 characters max.', true);
+    if (messageVal.length === 0 || messageVal.length > 300) {
+      showSystemMessage('System Error', 'System Error: Message size restrictions violated. Content body must be between 1 and 300 characters max.', true);
       return;
     }
 
