@@ -1,4 +1,4 @@
-const WEBHOOK_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEBHOOK_URL_HERE";
+const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxy8z8eErqhI5Q4t1aZBQrj2t2rHLQ1Be0aMzWHDUNkzUG_guOiLVwE4tH0GYWwU0SH9g/exec";
 
 // Window management state
 const openWindows = {};
