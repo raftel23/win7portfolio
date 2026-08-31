@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ashford - Windows 7 Web Portfolio</title>
+  <title>Denver - Windows 7 Web Portfolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <!-- DESKTOP CONTAINER -->
   <div id="desktop">
-    
+
     <!-- DESKTOP SHORTCUTS -->
     <div class="desktop-icons-container">
       <div class="desktop-icon" ondblclick="openWindow('about')">
@@ -25,13 +27,18 @@
         <div class="icon-pic">✉️</div>
         <div class="icon-label">Windows Mail</div>
       </div>
+      <div class="desktop-icon" ondblclick="openWindow('minesweeper')">
+        <div class="icon-pic">💣</div>
+        <div class="icon-label">Minesweeper</div>
+      </div>
     </div>
 
     <!-- ACTIVE WINDOWS RENDER SPACE -->
     <div id="desktop-windows-container">
-      
+
       <!-- MODULAR APP: ABOUT ME (NOTEPAD THEME) -->
-      <div class="aero-window" id="win-about" style="width: 580px; height: 420px; top: 80px; left: 100px; display: none;">
+      <div class="aero-window" id="win-about"
+        style="width: 580px; height: 420px; top: 80px; left: 100px; display: none;">
         <div class="aero-titlebar" onmousedown="startDrag(event, 'about')">
           <div class="aero-title-icon">📄</div>
           <div class="aero-title-text">About Me - Notepad</div>
@@ -43,23 +50,27 @@
         </div>
         <div class="aero-content">
           <div class="notepad-editor">
-            <div class="notepad-menu">File  Edit  Format  View  Help</div>
+            <div class="notepad-menu">File Edit Format View Help</div>
             <div class="notepad-body">
-              <img src="assets/sword.png" alt="Ashford Profile Pic" class="notepad-profile-pic" onerror="this.src='https://via.placeholder.com/100?text=Sword+Pic'">
-              <div class="notepad-text-content">Hello! I'm Ashford.
+              <img src="assets/sword.png" alt="Denver Profile Pic" class="notepad-profile-pic"
+                onerror="this.src='https://via.placeholder.com/100?text=Sword+Pic'">
+              <div class="notepad-text-content">Hello! I'm Denver.
 
-I am an Office Staff professional specializing in administrative records management. I focus on details, structural workflows, efficiency, and building reliable systems to handle physical and digital documents.
+                I am an Office Staff professional specializing in administrative records management. I focus on details,
+                structural workflows, efficiency, and building reliable systems to handle physical and digital
+                documents.
 
-This interactive portfolio is styled as a skeuomorphic tribute to Windows 7. 
+                This interactive portfolio is styled as a skeuomorphic tribute to Windows 7.
 
-Double-click desktop icons or use the Start Menu to explore further!</div>
+                Double-click desktop icons or use the Start Menu to explore further!</div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- MODULAR APP: TECHNICAL SKILLS (CONTROL PANEL THEME) -->
-      <div class="aero-window" id="win-skills" style="width: 620px; height: 440px; top: 120px; left: 140px; display: none;">
+      <div class="aero-window" id="win-skills"
+        style="width: 620px; height: 440px; top: 120px; left: 140px; display: none;">
         <div class="aero-titlebar" onmousedown="startDrag(event, 'skills')">
           <div class="aero-title-icon">⚙️</div>
           <div class="aero-title-text">Control Panel\System and Security\Skills</div>
@@ -124,7 +135,8 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
       </div>
 
       <!-- MODULAR APP: EMAIL CLIENT (WINDOWS LIVE MAIL THEME) -->
-      <div class="aero-window" id="win-contact" style="width: 540px; height: 420px; top: 160px; left: 180px; display: none;">
+      <div class="aero-window" id="win-contact"
+        style="width: 540px; height: 420px; top: 160px; left: 180px; display: none;">
         <div class="aero-titlebar" onmousedown="startDrag(event, 'contact')">
           <div class="aero-title-icon">✉️</div>
           <div class="aero-title-text">Windows Live Mail - Compose Message</div>
@@ -149,18 +161,45 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
                 <span>Subject:</span>
                 <input type="text" id="mail-subject" name="subject" placeholder="Inquiry details" required>
               </div>
-              <div class="mail-row">
+              <!-- <div class="mail-row">
                 <span>To:</span>
                 <input type="text" id="mail-to" name="to" value="ashford@gemini-devs.com" disabled readonly>
-              </div>
+              </div> -->
             </div>
             <div class="mail-body-wrapper">
-              <textarea id="mail-message" name="message" placeholder="Type your message details here..." required></textarea>
+              <textarea id="mail-message" name="message" placeholder="Type your message details here..."
+                required></textarea>
             </div>
             <div class="mail-footer">
               <button type="submit" class="win7-btn">Send</button>
             </div>
           </form>
+        </div>
+      </div>
+
+      <!-- MODULAR APP: MINESWEEPER -->
+      <div class="aero-window" id="win-minesweeper" style="width: 272px; height: 380px; top: 140px; left: 160px; display: none;">
+        <div class="aero-titlebar" onmousedown="startDrag(event, 'minesweeper')">
+          <div class="aero-title-icon">💣</div>
+          <div class="aero-title-text">Minesweeper</div>
+          <div class="aero-controls">
+            <button onclick="minimizeWindow(event, 'minesweeper')">&#9472;</button>
+            <button onclick="toggleMaximize(event, 'minesweeper')">&#9633;</button>
+            <button class="aero-close" onclick="closeWindow(event, 'minesweeper')">&times;</button>
+          </div>
+        </div>
+        <div class="aero-content">
+          <div class="minesweeper-window">
+            <div class="ms-menu">Game  Help</div>
+            <div class="ms-board">
+              <div class="ms-header">
+                <div class="ms-counter" id="ms-mines">010</div>
+                <div class="ms-face" id="ms-face" onclick="initMinesweeper()">😊</div>
+                <div class="ms-counter" id="ms-timer">000</div>
+              </div>
+              <div class="ms-grid" id="ms-grid"></div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -191,6 +230,13 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
               <span class="prog-subtitle">Send a message</span>
             </div>
           </div>
+          <div class="start-program-item" onclick="openWindow('minesweeper'); toggleStartMenu();">
+            <span class="prog-icon">💣</span>
+            <div class="prog-details">
+              <span class="prog-title">Minesweeper</span>
+              <span class="prog-subtitle">Classic retro game</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="start-right">
@@ -199,11 +245,15 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
           <div class="start-link" onclick="openWindow('about'); toggleStartMenu();">Documents</div>
           <div class="start-link" onclick="openWindow('skills'); toggleStartMenu();">Control Panel</div>
           <div class="start-divider"></div>
-          <div class="start-link" onclick="toggleStartMenu(); showSystemError('Help and Support portal is currently offline.');">Help and Support</div>
+          <div class="start-link"
+            onclick="toggleStartMenu(); showSystemError('Help and Support portal is currently offline.');">Help and
+            Support</div>
         </div>
         <div class="start-footer-right">
           <div class="shutdown-btn-container">
-            <button class="shutdown-btn" onclick="toggleStartMenu(); showSystemError('Shut down command block restricted: Demonstration mode.');">Shut down</button>
+            <button class="shutdown-btn"
+              onclick="toggleStartMenu(); showSystemError('Shut down command block restricted: Demonstration mode.');">Shut
+              down</button>
           </div>
         </div>
       </div>
@@ -240,11 +290,14 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
 
   <!-- RIGHT CLICK CUSTOM CONTEXT MENU -->
   <div class="context-menu" id="context-menu">
-    <div class="context-item" onclick="handleCtxAction('view')">View <span style="font-size: 8px; color: #666;">&#9656;</span></div>
-    <div class="context-item" onclick="handleCtxAction('sort')">Sort by <span style="font-size: 8px; color: #666;">&#9656;</span></div>
+    <div class="context-item" onclick="handleCtxAction('view')">View <span
+        style="font-size: 8px; color: #666;">&#9656;</span></div>
+    <div class="context-item" onclick="handleCtxAction('sort')">Sort by <span
+        style="font-size: 8px; color: #666;">&#9656;</span></div>
     <div class="context-item" onclick="handleCtxAction('refresh')">Refresh</div>
     <div class="context-divider"></div>
-    <div class="context-item" onclick="handleCtxAction('new')">New <span style="font-size: 8px; color: #666;">&#9656;</span></div>
+    <div class="context-item" onclick="handleCtxAction('new')">New <span
+        style="font-size: 8px; color: #666;">&#9656;</span></div>
     <div class="context-divider"></div>
     <div class="context-item" onclick="handleCtxAction('personalize')">Personalize</div>
   </div>
@@ -261,7 +314,8 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
       </div>
       <div class="error-content-body">
         <div class="error-message-row">
-          <img src="assets/error-icon.png" alt="Error Icon" class="error-system-icon" id="error-dialog-body-icon" onerror="this.src='https://img.icons8.com/color/48/000000/cancel--v1.png'">
+          <img src="assets/error-icon.png" alt="Error Icon" class="error-system-icon" id="error-dialog-body-icon"
+            onerror="this.src='https://img.icons8.com/color/48/000000/cancel--v1.png'">
           <div class="error-text-container">
             <span id="error-message-text">A system exception has occurred. Please confirm records state.</span>
           </div>
@@ -276,4 +330,5 @@ Double-click desktop icons or use the Start Menu to explore further!</div>
   <!-- EXTERNAL SCRIPT -->
   <script src="script.js"></script>
 </body>
+
 </html>

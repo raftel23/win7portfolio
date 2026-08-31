@@ -934,3 +934,118 @@ body.waiting, body.waiting * {
   background: #cce4f7;
   border-color: #005499;
 }
+
+/* PLAYABLE MINESWEEPER */
+.minesweeper-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f0f0f0;
+  align-items: center;
+}
+
+.ms-menu {
+  background: #f0f0f0;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #333;
+  word-spacing: 8px;
+  width: 100%;
+}
+
+.ms-board {
+  background: #bdbdbd;
+  border: 3px solid;
+  border-color: #f5f5f5 #7c7c7c #7c7c7c #f5f5f5;
+  padding: 6px;
+  margin-top: 15px;
+}
+
+.ms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #bdbdbd;
+  border: 3px solid;
+  border-color: #7c7c7c #f5f5f5 #f5f5f5 #7c7c7c;
+  padding: 4px;
+  margin-bottom: 6px;
+  height: 35px;
+  box-sizing: border-box;
+}
+
+.ms-counter {
+  background: #000;
+  color: #ff0000;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 0 4px;
+  border: 1px solid #7c7c7c;
+  width: 50px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.ms-face {
+  width: 26px;
+  height: 26px;
+  border: 2px solid;
+  border-color: #f5f5f5 #7c7c7c #7c7c7c #f5f5f5;
+  background: #bdbdbd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  font-size: 16px;
+}
+
+.ms-face:active {
+  border-color: #7c7c7c #f5f5f5 #f5f5f5 #7c7c7c;
+}
+
+.ms-grid {
+  border: 3px solid;
+  border-color: #7c7c7c #f5f5f5 #f5f5f5 #7c7c7c;
+  background: #7c7c7c;
+  display: grid;
+  gap: 1px;
+}
+
+.ms-cell {
+  width: 25px;
+  height: 25px;
+  background: #bdbdbd;
+  border: 2px solid;
+  border-color: #f5f5f5 #7c7c7c #7c7c7c #f5f5f5;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: default;
+}
+
+.ms-cell.revealed {
+  border: 1px solid #7c7c7c;
+  background: #d9d9d9;
+}
+
+.ms-cell.mine {
+  background: #ff4d4d;
+}
+
+.ms-cell.flagged {
+  font-size: 11px;
+}
+
+.ms-cell[data-count="1"] { color: blue; }
+.ms-cell[data-count="2"] { color: green; }
+.ms-cell[data-count="3"] { color: red; }
+.ms-cell[data-count="4"] { color: darkblue; }
+.ms-cell[data-count="5"] { color: brown; }
+.ms-cell[data-count="6"] { color: cyan; }
+.ms-cell[data-count="7"] { color: black; }
+.ms-cell[data-count="8"] { color: gray; }

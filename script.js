@@ -66,6 +66,11 @@ function openWindow(id) {
 
   addTaskbarItem(id, title, icon);
   focusWindow(id);
+
+  // Initialize game on open
+  if (id === 'minesweeper') {
+    initMinesweeper();
+  }
 }
 
 function focusWindow(id) {
@@ -94,6 +99,12 @@ function closeWindow(event, id) {
   win.style.display = 'none';
   delete openWindows[id];
   removeTaskbarItem(id);
+
+  // Stop timer on close
+  if (id === 'minesweeper' && msTimerId) {
+    clearInterval(msTimerId);
+    msTimerId = null;
+  }
 }
 
 function minimizeWindow(event, id) {
@@ -118,8 +129,8 @@ function toggleMaximize(event, id) {
   if (win.classList.contains('maximized')) {
     win.classList.remove('maximized');
     // Restore styling
-    win.style.width = id === 'about' ? '580px' : id === 'skills' ? '620px' : '540px';
-    win.style.height = id === 'about' ? '420px' : id === 'skills' ? '440px' : '420px';
+    win.style.width = id === 'about' ? '580px' : id === 'skills' ? '620px' : id === 'minesweeper' ? '272px' : '540px';
+    win.style.height = id === 'about' ? '420px' : id === 'skills' ? '440px' : id === 'minesweeper' ? '380px' : '420px';
   } else {
     win.classList.add('maximized');
     win.style.width = '';
@@ -438,4 +449,218 @@ function showSystemError(message) {
 function dismissSystemError() {
   const overlay = document.getElementById('win-error-overlay');
   if (overlay) overlay.style.display = 'none';
+}
+
+// MINESWEEPER RETRO GAME LOOP ENGINE
+let msGrid = [];
+let msRows = 9;
+let msCols = 9;
+let msMines = 10;
+let msRevealedCount = 0;
+let msGameOver = false;
+let msTimerId = null;
+let msSeconds = 0;
+let msMinesCount = 10;
+
+function initMinesweeper() {
+  const gridEl = document.getElementById('ms-grid');
+  if (!gridEl) return;
+  gridEl.innerHTML = '';
+  gridEl.style.gridTemplateColumns = `repeat(${msCols}, 25px)`;
+  gridEl.style.gridTemplateRows = `repeat(${msRows}, 25px)`;
+
+  msGrid = [];
+  msRevealedCount = 0;
+  msGameOver = false;
+  msSeconds = 0;
+  msMinesCount = msMines;
+
+  const timerEl = document.getElementById('ms-timer');
+  const minesEl = document.getElementById('ms-mines');
+  const faceEl = document.getElementById('ms-face');
+
+  if (timerEl) timerEl.innerText = '000';
+  if (minesEl) minesEl.innerText = String(msMines).padStart(3, '0');
+  if (faceEl) faceEl.innerText = '😊';
+
+  if (msTimerId) {
+    clearInterval(msTimerId);
+    msTimerId = null;
+  }
+
+  // Generate grid board cells
+  for (let r = 0; r < msRows; r++) {
+    msGrid[r] = [];
+    for (let c = 0; c < msCols; c++) {
+      const cell = {
+        row: r,
+        col: c,
+        isMine: false,
+        isRevealed: false,
+        isFlagged: false,
+        neighborMines: 0,
+        element: document.createElement('div')
+      };
+
+      cell.element.classList.add('ms-cell');
+      cell.element.addEventListener('click', () => handleCellClick(r, c));
+      cell.element.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        handleCellRightClick(r, c);
+      });
+
+      gridEl.appendChild(cell.element);
+      msGrid[r][c] = cell;
+    }
+  }
+
+  // Smiley face animations during click gestures
+  gridEl.addEventListener('mousedown', () => {
+    if (!msGameOver && faceEl) faceEl.innerText = '😮';
+  });
+  gridEl.addEventListener('mouseup', () => {
+    if (!msGameOver && faceEl && faceEl.innerText === '😮') {
+      faceEl.innerText = '😊';
+    }
+  });
+
+  // Distribute random mines
+  let minesPlaced = 0;
+  while (minesPlaced < msMines) {
+    const r = Math.floor(Math.random() * msRows);
+    const c = Math.floor(Math.random() * msCols);
+    if (!msGrid[r][c].isMine) {
+      msGrid[r][c].isMine = true;
+      minesPlaced++;
+    }
+  }
+
+  // Calculate neighbor warning counts
+  for (let r = 0; r < msRows; r++) {
+    for (let c = 0; c < msCols; c++) {
+      if (msGrid[r][c].isMine) continue;
+      let count = 0;
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          const nr = r + dr;
+          const nc = c + dc;
+          if (nr >= 0 && nr < msRows && nc >= 0 && nc < msCols) {
+            if (msGrid[nr][nc].isMine) count++;
+          }
+        }
+      }
+      msGrid[r][c].neighborMines = count;
+    }
+  }
+}
+
+function startMinesweeperTimer() {
+  if (msTimerId) return;
+  msTimerId = setInterval(() => {
+    msSeconds = Math.min(msSeconds + 1, 999);
+    const timerEl = document.getElementById('ms-timer');
+    if (timerEl) timerEl.innerText = String(msSeconds).padStart(3, '0');
+  }, 1000);
+}
+
+function handleCellClick(r, c) {
+  if (msGameOver) return;
+  startMinesweeperTimer();
+
+  const cell = msGrid[r][c];
+  if (cell.isFlagged || cell.isRevealed) return;
+
+  if (cell.isMine) {
+    gameOver(false);
+    return;
+  }
+
+  revealCell(r, c);
+
+  // Check win condition
+  if (msRevealedCount === (msRows * msCols - msMines)) {
+    gameOver(true);
+  }
+}
+
+function revealCell(r, c) {
+  const cell = msGrid[r][c];
+  if (cell.isRevealed || cell.isFlagged) return;
+
+  cell.isRevealed = true;
+  cell.element.classList.add('revealed');
+  msRevealedCount++;
+
+  if (cell.neighborMines > 0) {
+    cell.element.innerText = cell.neighborMines;
+    cell.element.setAttribute('data-count', cell.neighborMines);
+  } else {
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        const nr = r + dr;
+        const nc = c + dc;
+        if (nr >= 0 && nr < msRows && nc >= 0 && nc < msCols) {
+          revealCell(nr, nc);
+        }
+      }
+    }
+  }
+}
+
+function handleCellRightClick(r, c) {
+  if (msGameOver) return;
+  startMinesweeperTimer();
+
+  const cell = msGrid[r][c];
+  if (cell.isRevealed) return;
+
+  const minesEl = document.getElementById('ms-mines');
+
+  if (cell.isFlagged) {
+    cell.isFlagged = false;
+    cell.element.classList.remove('flagged');
+    cell.element.innerText = '';
+    msMinesCount++;
+  } else {
+    cell.isFlagged = true;
+    cell.element.classList.add('flagged');
+    cell.element.innerText = '🚩';
+    msMinesCount--;
+  }
+  if (minesEl) {
+    minesEl.innerText = String(Math.max(0, msMinesCount)).padStart(3, '0');
+  }
+}
+
+function gameOver(isWin) {
+  msGameOver = true;
+  clearInterval(msTimerId);
+  msTimerId = null;
+
+  const faceEl = document.getElementById('ms-face');
+
+  if (isWin) {
+    if (faceEl) faceEl.innerText = '😎';
+    // Flag all unflagged mines
+    for (let r = 0; r < msRows; r++) {
+      for (let c = 0; c < msCols; c++) {
+        if (msGrid[r][c].isMine && !msGrid[r][c].isFlagged) {
+          msGrid[r][c].isFlagged = true;
+          msGrid[r][c].element.classList.add('flagged');
+          msGrid[r][c].element.innerText = '🚩';
+        }
+      }
+    }
+  } else {
+    if (faceEl) faceEl.innerText = '😵';
+    // Show all mines
+    for (let r = 0; r < msRows; r++) {
+      for (let c = 0; c < msCols; c++) {
+        if (msGrid[r][c].isMine) {
+          msGrid[r][c].element.classList.add('mine');
+          msGrid[r][c].element.innerText = '💣';
+        }
+      }
+    }
+  }
 }
