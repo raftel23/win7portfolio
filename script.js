@@ -1,5 +1,8 @@
 const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxuNDoPcHgz3jltRSGoHtcBZbAmHZdjKl5Z90bskUNI2yqrZxgU25kjWX2sVYzyOAwIMw/exec";
 
+// rate-limit cooldown duration set to 3 minutes (180000 milliseconds)
+const COOLDOWN_DURATION = 180000;
+
 // Window management state
 const openWindows = {};
 let windowZIndex = 100;
@@ -24,7 +27,7 @@ document.addEventListener('click', playStartupChimeOnce);
 document.addEventListener('DOMContentLoaded', () => {
   updateClock();
   setInterval(updateClock, 1000);
-
+  
   // Instantly pop open the 'About Me' Notepad frame on startup
   openWindow('about');
 });
@@ -100,7 +103,7 @@ function minimizeWindow(event, id) {
 
   win.style.display = 'none';
   win.classList.add('minimized');
-
+  
   // Revert active states
   win.classList.remove('active');
   const btn = document.querySelector(`.taskbar-btn[data-window-id="${id}"]`);
@@ -277,7 +280,7 @@ function handleCtxAction(action) {
       desktop.classList.remove('win7-refresh-flicker');
       void desktop.offsetWidth; // Force redraw reflow
       desktop.classList.add('win7-refresh-flicker');
-
+      
       // Remove class after animation concludes
       setTimeout(() => {
         desktop.classList.remove('win7-refresh-flicker');
@@ -286,21 +289,57 @@ function handleCtxAction(action) {
   }
 }
 
-// FORM WEBHOOK SUBMISSION ENGINE
+// FORM WEBHOOK SUBMISSION ENGINE (WITH SPAM MITIGATION & VALIDATIONS)
 document.addEventListener('submit', (e) => {
   if (e.target && e.target.id === 'email-form') {
     e.preventDefault();
 
-    // 1. Show classic Windows hourglass wait cursor
+    // 1. PERSISTENT COOLDOWN RATE LIMITER
+    const lastSubmission = localStorage.getItem('last_submission_time');
+    const now = Date.now();
+    if (lastSubmission) {
+      const elapsed = now - parseInt(lastSubmission, 10);
+      if (elapsed < COOLDOWN_DURATION) {
+        const remaining = COOLDOWN_DURATION - elapsed;
+        const minutes = Math.floor(remaining / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+        showSystemMessage('System Error', `Security Warning: Flood protection active. Please wait ${minutes} minutes and ${seconds} seconds before submitting another transmission.`, true);
+        return;
+      }
+    }
+
+    // 2. COMPREHENSIVE CLIENT-SIDE VALIDATION
+    // Trim values
+    const nameVal = document.getElementById('mail-name').value.trim();
+    const emailVal = document.getElementById('mail-sender').value.trim();
+    const subjectVal = document.getElementById('mail-subject').value.trim();
+    const messageVal = document.getElementById('mail-message').value.trim();
+
+    // Presence checks
+    if (nameVal === "" || emailVal === "" || subjectVal === "") {
+      showSystemMessage('System Error', 'System Error: All header entry fields are mandatory.', true);
+      return;
+    }
+
+    // Regex Email Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailVal)) {
+      showSystemMessage('System Error', 'System Error: The email address configuration provided is structurally invalid.', true);
+      return;
+    }
+
+    // Message Body Size checks
+    if (messageVal.length === 0 || messageVal.length > 500) {
+      showSystemMessage('System Error', 'System Error: Message size restrictions violated. Content body must be between 1 and 500 characters max.', true);
+      return;
+    }
+
+    // 3. TRANSMISSION PIPELINE LOGIC
+    // Set wait loading cursors
+    document.body.style.cursor = 'wait';
     document.body.classList.add('waiting');
 
-    // 2. Collect field values
-    const nameVal = document.getElementById('mail-name').value;
-    const emailVal = document.getElementById('mail-sender').value;
-    const subjectVal = document.getElementById('mail-subject').value;
-    const messageVal = document.getElementById('mail-message').value;
-
-    // 3. Payload Data Mapping
+    // Gather payload
     const payload = {
       name: nameVal,
       email: emailVal,
@@ -310,7 +349,7 @@ document.addEventListener('submit', (e) => {
       tags: "win7-portfolio"
     };
 
-    // 4. Native fetch transmission
+    // Native fetch post transmission
     fetch(WEBHOOK_URL, {
       method: 'POST',
       headers: {
@@ -318,29 +357,40 @@ document.addEventListener('submit', (e) => {
       },
       body: JSON.stringify(payload)
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(result => {
-        // 5. State Cleanup & message presentation
-        document.body.classList.remove('waiting');
-        if (result && result.status === 'success') {
-          e.target.reset();
-          showSystemMessage('Windows Mail', 'Your message has been sent successfully.', false);
-        } else {
-          const errorMsg = result && result.message ? result.message : 'Unknown Webhook Error';
-          showSystemMessage('System Error', `Failed to deliver message: ${errorMsg}`, true);
-        }
-      })
-      .catch(error => {
-        // Capture error and show system dialog popup
-        document.body.classList.remove('waiting');
-        const errorMsg = error && error.message ? error.message : String(error);
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(result => {
+      // Restore mouse pointer state
+      document.body.style.cursor = 'default';
+      document.body.classList.remove('waiting');
+
+      if (result && result.status === 'success') {
+        // Clear all form inputs
+        e.target.reset();
+
+        // Save last submission timestamp
+        localStorage.setItem('last_submission_time', Date.now().toString());
+
+        // Display success confirmation dialog
+        showSystemMessage('Windows Mail', 'Your message has been sent successfully.', false);
+      } else {
+        const errorMsg = result && result.message ? result.message : 'Unknown Webhook Error';
         showSystemMessage('System Error', `Failed to deliver message: ${errorMsg}`, true);
-      });
+      }
+    })
+    .catch(error => {
+      // Restore default pointer
+      document.body.style.cursor = 'default';
+      document.body.classList.remove('waiting');
+
+      // Pipe error directly to System Error dialog
+      const errorMsg = error && error.message ? error.message : String(error);
+      showSystemMessage('System Error', `Failed to deliver message: ${errorMsg}`, true);
+    });
   }
 });
 
@@ -375,7 +425,7 @@ function showSystemMessage(title, message, isError = true) {
   }
 
   overlay.style.display = 'flex';
-
+  
   // Place active z-index prioritized top of screen
   windowZIndex++;
   dialog.style.zIndex = windowZIndex;
