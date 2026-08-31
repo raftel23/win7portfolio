@@ -11,15 +11,21 @@ let windowZIndex = 100;
 const startupChime = new Audio('assets/startup.mp3');
 let chimePlayed = false;
 
-// Play chime on the very first click/tap interaction
+// Play chime on load or first user interaction (gesture fallback)
 function playStartupChimeOnce() {
   if (chimePlayed) return;
   chimePlayed = true;
   startupChime.volume = 0.45;
-  startupChime.play().catch(err => {
-    console.log("Audio autoplay restricted by browser policies:", err);
-  });
-  document.removeEventListener('click', playStartupChimeOnce);
+  startupChime.play()
+    .then(() => {
+      // Succeeded onload or on click; clean up the click listener
+      document.removeEventListener('click', playStartupChimeOnce);
+    })
+    .catch(err => {
+      // Reset flag to allow the click gesture trigger to play it
+      chimePlayed = false;
+      console.log("Audio autoplay restricted by browser policies, waiting for user click:", err);
+    });
 }
 document.addEventListener('click', playStartupChimeOnce);
 
@@ -27,6 +33,9 @@ document.addEventListener('click', playStartupChimeOnce);
 document.addEventListener('DOMContentLoaded', () => {
   updateClock();
   setInterval(updateClock, 1000);
+  
+  // Try playing the sound immediately on load
+  playStartupChimeOnce();
   
   // Instantly pop open the 'About Me' Notepad frame on startup
   openWindow('about');
